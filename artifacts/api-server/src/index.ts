@@ -1,6 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
-import { startBot } from "./bot";
+import { setupBot } from "./bot";
 
 const rawPort = process.env["PORT"];
 
@@ -23,7 +23,7 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
-});
 
-// Start the Telegram bot
-startBot();
+  // Register webhook (or start polling) after server is live
+  setupBot().catch((err) => logger.error({ err }, "Bot setup failed"));
+});
